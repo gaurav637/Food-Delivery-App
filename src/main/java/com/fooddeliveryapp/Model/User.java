@@ -30,17 +30,17 @@ public class User {
 	 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private int id;
 	
 	private String fullName;
 	
-	@Email(message = "please enter valid email")
+	//@Email(message = "please enter valid email")
 	private String email;
 	
-	@Size(max = 12,min = 4,message = "password size 8 to 12")
+	//@Size(max = 12,min = 4,message = "password size 8 to 12")
 	private String password;
 	
-	private USER_ROLE roles;
+	private USER_ROLE roles = USER_ROLE.ROLE_USER;
 	
 	@JsonIgnore
 	@OneToMany(cascade = CascadeType.ALL,mappedBy = "customer")
