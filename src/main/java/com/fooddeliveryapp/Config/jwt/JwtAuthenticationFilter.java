@@ -12,7 +12,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import com.fooddeliveryapp.Constants.jwtConstants;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.io.IOException;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.FilterChain;
@@ -26,13 +29,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException, java.io.IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain){
         // Bearer
         String requestHeader = request.getHeader(jwtConstants.JWT_HEADER);
         String token = null;
         if(requestHeader != null && requestHeader.startsWith("Bearer")) {
             //looking good
-            token = requestHeader.substring(7);
+            token = requestHeader.substring(7).trim();
             try {
                  
             	SecretKey key = Keys.hmacShaKeyFor(jwtConstants.SECRET_KEY.getBytes());
@@ -42,12 +45,29 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             	List<GrantedAuthority> auth = AuthorityUtils.commaSeparatedStringToAuthorityList(authorities);//converts string to grantedAuthority
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(email, null, auth);	
             	SecurityContextHolder.getContext().setAuthentication(authentication);
-            } catch (Exception e) {
-                logger.info("Invalid Header Value  !!");
+            } catch (IllegalArgumentException e) {
+                logger.info("Illegal Argument while fetching the username !!");
+                e.printStackTrace();
+            } catch (ExpiredJwtException e) {
+                logger.info("Given jwt token is expired !!");
+                e.printStackTrace();
+            } catch (MalformedJwtException e) {
+                logger.info("Some changed has done in token !! Invalid Token");
+                e.printStackTrace();
+            }catch (JwtException e) {
+                logger.error("Error parsing JWT token: " + e.getMessage());
+                // Handle JWT exception, such as token expiration, invalid signature, etc.
+                // For example, you can return a specific error response to the client
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            }
+            catch (Exception e) {
+                logger.info("Invalid Header Value  !!!!");
                 e.printStackTrace();
             }
-        } else {
-            logger.info("Invalid Header Value !! ");
+            
+        } 
+        else {
+            logger.info("Invalid Header Value !!! ");
         }
  
         try {

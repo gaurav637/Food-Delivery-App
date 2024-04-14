@@ -23,7 +23,6 @@ import com.fooddeliveryapp.Model.USER_ROLE;
 import com.fooddeliveryapp.Model.User;
 import com.fooddeliveryapp.Repository.CartRepository;
 import com.fooddeliveryapp.Repository.userRepository;
-
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -108,7 +107,7 @@ public class authController {
 		
     	authResponse aResponse = new authResponse();
     	aResponse.setJwtToken(token);
-    	aResponse.setMessage("Register Success.");   
+    	aResponse.setMessage("Login Success.");   
     	aResponse.setRole(USER_ROLE.valueOf(roles));
     	return new ResponseEntity<authResponse>(aResponse,HttpStatus.CREATED);	
 	}
