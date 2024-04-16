@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fooddeliveryapp.Config.JwtProvider;
+import com.fooddeliveryapp.Exceptions.ResourceNotFoundException;
 import com.fooddeliveryapp.Model.User;
 import com.fooddeliveryapp.Repository.userRepository;
 import com.fooddeliveryapp.Services.userService;
@@ -30,6 +31,12 @@ public class userServiceImple implements userService{
 		if(user==null) {
 			throw new Exception("user not found !!");
 		}
+		return user;
+	}
+
+	@Override
+	public User findUserById(int id) {
+		User user = uRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("User","id",id));
 		return user;
 	}
 
