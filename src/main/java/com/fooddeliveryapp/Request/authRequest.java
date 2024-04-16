@@ -1,4 +1,4 @@
-package com.fooddeliveryapp.Config.Request;
+package com.fooddeliveryapp.Request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -24,21 +24,20 @@ public class JwtProvider {
 	public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
 
 	public String generateToken(Authentication auth) {
-		Collection<? extends GrantedAuthority>authorities = auth.getAuthorities();
-		String roles = populateAuthorities(authorities);
-		
-		String jwt = Jwts.builder()
-				.setIssuedAt(new Date(System.currentTimeMillis()))
-				.setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000)) // converting to milliseconds
-				.claim("email",auth.getName())
-				.claim("authorities", roles)
-				.signWith(SignatureAlgorithm.HS512, key)
+        Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+        String roles = populateAuthorities(authorities);
+
+        String jwt = Jwts.builder()
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000)) // milliseconds
+                .claim("email", auth.getName())
+                .claim("authorities", roles)
+                .signWith(SignatureAlgorithm.HS384,key)
                 .compact();
-                
-        return jwt;         
 
-	}
-
+        return jwt;
+    }
+	
 	public String getEmailFromToken(String token) {
 		token = token.substring(7);
 		Claims claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJwt(token).getBody();
