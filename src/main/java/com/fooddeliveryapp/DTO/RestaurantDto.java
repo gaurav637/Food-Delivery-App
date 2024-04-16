@@ -4,12 +4,16 @@ import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
 @Embeddable
+@NoArgsConstructor
+@AllArgsConstructor
 public class RestaurantDto {
 	
      private String title;
@@ -19,5 +23,5 @@ public class RestaurantDto {
      
      private String description;
      
-     private Long id;
+     private int id;
 }

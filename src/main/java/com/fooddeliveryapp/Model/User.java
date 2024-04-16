@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fooddeliveryapp.DTO.RestaurantDto;
 
 import jakarta.persistence.CascadeType;
@@ -38,6 +39,7 @@ public class User {
 	private String email;
 	
 	//@Size(max = 12,min = 4,message = "password size 8 to 12")
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY )
 	private String password;
 	
 	private USER_ROLE roles = USER_ROLE.ROLE_USER;

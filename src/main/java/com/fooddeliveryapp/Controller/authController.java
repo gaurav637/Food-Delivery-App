@@ -16,13 +16,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.fooddeliveryapp.Config.JwtProvider;
 import com.fooddeliveryapp.Config.customUserDetailsServices;
-import com.fooddeliveryapp.Config.Request.authRequest;
-import com.fooddeliveryapp.Config.Response.authResponse;
 import com.fooddeliveryapp.Model.Cart;
 import com.fooddeliveryapp.Model.USER_ROLE;
 import com.fooddeliveryapp.Model.User;
 import com.fooddeliveryapp.Repository.CartRepository;
 import com.fooddeliveryapp.Repository.userRepository;
+import com.fooddeliveryapp.Request.authRequest;
+import com.fooddeliveryapp.Response.authResponse;
+
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

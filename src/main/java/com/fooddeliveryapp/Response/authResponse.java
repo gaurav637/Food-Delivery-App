@@ -1,4 +1,4 @@
-package com.fooddeliveryapp.Config.Response;
+package com.fooddeliveryapp.Response;
 
 import com.fooddeliveryapp.Model.USER_ROLE;
 
