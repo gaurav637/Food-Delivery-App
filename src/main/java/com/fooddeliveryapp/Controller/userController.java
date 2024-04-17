@@ -12,21 +12,25 @@ import com.fooddeliveryapp.Model.User;
 import com.fooddeliveryapp.Services.userService;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/v1/user")
 public class userController {
 
 	@Autowired
 	private userService uService;
 	
-	@GetMapping("/profile")
-	public ResponseEntity<User> findUserByJwtToken(@RequestHeader("Authorization") String token)throws Exception{
-		User user = this.uService.findUserByJwtToken(token);
-		return new ResponseEntity<User>(user,HttpStatus.OK);
-	}
+//	@GetMapping("/profile")
+//	public ResponseEntity<User> findUserByJwtToken(@RequestHeader("Authorization") String token)throws Exception{
+//		User user = this.uService.findUserByJwtToken(token);
+//		return new ResponseEntity<User>(user,HttpStatus.OK);
+//	}
+//	
+//	public ResponseEntity<User> findUserByEmail(@RequestBody String email)throws Exception{
+//		User user = this.uService.findUserByEmail(email);
+//		return new ResponseEntity<User>(user,HttpStatus.OK);
+//	}
 	
-	public ResponseEntity<User> findUserByEmail(@RequestBody String email)throws Exception{
-		User user = this.uService.findUserByEmail(email);
-		return new ResponseEntity<User>(user,HttpStatus.OK);
-	}
+	
+	
+	
 	
 }

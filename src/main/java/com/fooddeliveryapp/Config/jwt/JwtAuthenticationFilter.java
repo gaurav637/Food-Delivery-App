@@ -1,80 +1,75 @@
 package com.fooddeliveryapp.Config.jwt;
 
 
+import java.io.IOException;
 import java.util.List;
 import javax.crypto.SecretKey;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+
+import com.fooddeliveryapp.Config.JwtProvider;
+import com.fooddeliveryapp.Config.UserServiceConfig;
 import com.fooddeliveryapp.Constants.jwtConstants;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.io.IOException;
 import io.jsonwebtoken.security.Keys;
+import io.micrometer.common.util.StringUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-
+	
+	@Autowired
+	private JwtProvider jProvider;
+	
+	@Autowired
+	private UserServiceConfig userService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain){
-        // Bearer
-        String requestHeader = request.getHeader(jwtConstants.JWT_HEADER);
-        String token = null;
-       // if(requestHeader != null && requestHeader.startsWith("Bearer"))
-        	if(requestHeader != null) {
-            //looking good
-            token = requestHeader.substring(7).trim();
-            try {
-                 
-            	SecretKey key = Keys.hmacShaKeyFor(jwtConstants.SECRET_KEY.getBytes());
-            	Claims claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJwt(token).getBody();
-            	String email = String.valueOf(claims.get("email"));
-            	String authorities = String.valueOf((claims.get("authorities")));
-            	List<GrantedAuthority> auth = AuthorityUtils.commaSeparatedStringToAuthorityList(authorities);//converts string to grantedAuthority
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(email, null, auth);	
-            	SecurityContextHolder.getContext().setAuthentication(authentication);
-            } catch (IllegalArgumentException e) {
-                logger.info("Illegal Argument while fetching the username !!");
-                e.printStackTrace();
-            } catch (ExpiredJwtException e) {
-                logger.info("Given jwt token is expired !!");
-                e.printStackTrace();
-            } catch (MalformedJwtException e) {
-                logger.info("Some changed has done in token !! Invalid Token");
-                e.printStackTrace();
-            }catch (JwtException e) {
-                logger.error("Error parsing JWT token: " + e.getMessage());
-                // Handle JWT exception, such as token expiration, invalid signature, etc.
-                // For example, you can return a specific error response to the client
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            }
-            catch (Exception e) {
-                logger.info("Invalid Header Value  !!!!");
-                e.printStackTrace();
-            }
-            
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException{    
+        String requestHeader = request.getHeader("Authorization");// use constant class
+        String username = null;
+        String token = null;// Bearer
+        if (StringUtils.isEmpty(requestHeader) || !org.apache.commons.lang3.StringUtils.startsWith(requestHeader,"Bearer")){
+           filterChain.doFilter(request, response);
+           return;
         } 
-        else {
-            logger.info("Invalid Header Value !!! ");
+        token = requestHeader.substring(7);
+        username = this.jProvider.getUsernameFromToken(token);
+
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            UserDetails userDetails = userService.userDetailsService().loadUserByUsername(username);
+            Boolean validateToken = this.jProvider.validateToken(token, userDetails);
+            if (validateToken) {
+            	
+            	SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+                //set the authentication
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                securityContext.setAuthentication(authentication);
+                SecurityContextHolder.setContext(securityContext);
+            } else {
+                logger.info("Validation fails !!");
+            }
         }
- 
-        try {
-			filterChain.doFilter(request, response);
-		} catch (java.io.IOException | ServletException e) {
-			e.printStackTrace();
-		}    
+        filterChain.doFilter(request, response); 
+       
     }
 }

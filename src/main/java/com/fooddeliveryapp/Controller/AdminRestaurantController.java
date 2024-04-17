@@ -1,6 +1,5 @@
 package com.fooddeliveryapp.Controller;
 
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,20 +11,17 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import com.fooddeliveryapp.DTO.RestaurantDto;
 import com.fooddeliveryapp.Model.Restaurant;
 import com.fooddeliveryapp.Model.User;
 import com.fooddeliveryapp.Repository.userRepository;
 import com.fooddeliveryapp.Request.CreateRestaurantRequest;
 import com.fooddeliveryapp.Response.ApiResponse;
-import com.fooddeliveryapp.Response.ResponseWrapper;
 import com.fooddeliveryapp.Services.restaurantServices;
 import com.fooddeliveryapp.Services.userService;
 
 @RestController
-@RequestMapping("api/admin/restaurant")
+@RequestMapping("api/v1/admin")
 public class AdminRestaurantController {
 	
 	@Autowired
@@ -54,9 +50,10 @@ public class AdminRestaurantController {
 	}
 	
 	@PutMapping("/update-restaurant/{restId}")
-	public ResponseEntity<?> updateRestaurants(@RequestBody CreateRestaurantRequest req, @PathVariable("restId") int restId){
+	public ResponseEntity<?> updateRestaurants(@RequestBody CreateRestaurantRequest req,@RequestHeader("Authorization") String token, @PathVariable("restId") int restId){
 		try {
 			Restaurant restaurant = rServices.updateRestaurant(restId, req);
+			User user = uService.findUserByJwtToken(token);
 			return new ResponseEntity<Restaurant>(restaurant,HttpStatus.OK);
 		}catch(Exception e) {
 			String errorMessage = "Failed to update Restaurant !"+e.getMessage();
@@ -65,9 +62,10 @@ public class AdminRestaurantController {
 	}
 	
 	@DeleteMapping("delete-restaurant/{restId}")
-	public ResponseEntity<?> deleteRestaurant(@PathVariable("restId") int restId){
+	public ResponseEntity<?> deleteRestaurant(@PathVariable("restId") int restId,@RequestHeader("Authorization") String token){
 		try {
 			this.rServices.deleteRestaurant(restId);
+			User user = uService.findUserByJwtToken(token);
 			ApiResponse response = new ApiResponse("Restaurant is deleted successfully.",true);
 			return new ResponseEntity<ApiResponse>(response,HttpStatus.OK);
 		}catch(Exception e) {
@@ -76,70 +74,13 @@ public class AdminRestaurantController {
 		}
 	}
 	
-	@GetMapping("/get-all-restaurants")
-	public ResponseEntity<ResponseWrapper> getAllRestaurants() throws Exception{
-		try {
-            List<Restaurant> allRestaurants = rServices.getAllRestaurant();
-            return ResponseEntity.ok(new ResponseWrapper(allRestaurants, "Valid"));
-        } catch (Exception e) {
-            String errorMessage = "Restaurant is Not Exist : " + e.getMessage();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                                 .body(new ResponseWrapper(null, errorMessage));
-        }
-	}
-	
-	@GetMapping("/get-all-search-restaurants")
-	public ResponseEntity<ResponseWrapper> getAllSearchRestaurants(@RequestParam("name") String name) throws Exception{
-		try {
-            List<Restaurant> allRestaurants = rServices.searchRestaurant(name);
-            return ResponseEntity.ok(new ResponseWrapper(allRestaurants, "Valid"));
-        } catch (Exception e) {
-            String errorMessage = "Restaurant is not found with Restaurant name : " + e.getMessage();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                                 .body(new ResponseWrapper(null, errorMessage));
-        }
-		
-	}
-	
-	@GetMapping("/get-restaurant-by-id/{restId}")
-	public ResponseEntity<?> getRestaurantById(@PathVariable("restId") int id){
-		try {
-			Restaurant restaurant = rServices.getRestaurantById(id);
-			return new ResponseEntity<>(restaurant,HttpStatus.OK);
-		}catch(Exception e) {
-			String errorMessage	= "Restaurant is not Present with Restaurant Id :"+e.getMessage();		
-			return new ResponseEntity<>(errorMessage,HttpStatus.NOT_FOUND);
-		}
-	}
-	
-	@GetMapping("/get-restaurant-by-user-id/{userId}")
-	public ResponseEntity<?> getRestaurantByUserId(@PathVariable("userId") int id){
-		try {
-			Restaurant restaurant = rServices.getRestaurantByUserId(id);
-			return new ResponseEntity<>(restaurant,HttpStatus.OK);
-		}catch(Exception e) {
-			String  errorMessage = "Restaurant is not present with userId:"+e.getMessage();
-			return new ResponseEntity<>(errorMessage,HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
-	
-	@GetMapping("/add-favorite-restaurant/{restId}/user/{userId}")
-	public ResponseEntity<?> addFavoriteRestaurant(@PathVariable("restId") int restId,@PathVariable("userId") int userId){
-		try {
-			User user = uService.findUserById(userId);
-			RestaurantDto restDto =	rServices.addFavoritesRestaurant(restId, user);
-			return new ResponseEntity<>(restDto,HttpStatus.OK);
-		}catch(Exception e) {
-			String errorMessage = "Failed to add Favorite Restaurant !"+e.getMessage();
-			return new ResponseEntity<>(errorMessage,HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
 	
 	@GetMapping("/update-restaurant-status/{restId}")
-	public ResponseEntity<?> updateRestaurantStatusInController(@PathVariable("restId") int id){
+	public ResponseEntity<?> updateRestaurantStatusInController(@PathVariable("restId") int id,@RequestHeader("Authorization") String token){
 		try {
 			  
 			Restaurant rest = rServices.updateRestaurantStatus(id);
+			User user = uService.findUserByJwtToken(token);
 			return new ResponseEntity<>(rest,HttpStatus.INTERNAL_SERVER_ERROR);
 			
 		}catch(Exception e) {
@@ -147,4 +88,17 @@ public class AdminRestaurantController {
 			return new ResponseEntity<>(errorMessage,HttpStatus.INTERNAL_SERVER_ERROR);		
 		}
 	}
+	
+	@GetMapping("/get-restaurant-by-user-id/{userId}")
+	public ResponseEntity<?> getRestaurantByUserId(@PathVariable("userId") int id,@RequestHeader("Authorization") String token){
+		try {
+			User user = uService.findUserByJwtToken(token);
+			Restaurant restaurant = rServices.getRestaurantByUserId(user.getId());
+			return new ResponseEntity<>(restaurant,HttpStatus.OK);
+		}catch(Exception e) {
+			String  errorMessage = "Restaurant is not present with userId:"+e.getMessage();
+			return new ResponseEntity<>(errorMessage,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
 }

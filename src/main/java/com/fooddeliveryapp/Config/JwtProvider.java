@@ -1,55 +1,95 @@
 package com.fooddeliveryapp.Config;
 
-import java.util.Collection;
+import java.security.Key;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
-
-import javax.crypto.SecretKey;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
+import java.util.function.Function;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import com.fooddeliveryapp.Constants.jwtConstants;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
 @Service
 public class JwtProvider {
 	
-	private SecretKey key = Keys.hmacShaKeyFor(jwtConstants.SECRET_KEY.getBytes());
-	public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
+	//private SecretKey key = Keys.hmacShaKeyFor(jwtConstants.SECRET_KEY.getBytes());
+	//private String key = "shdsdsireoiroemcxnGVHGHJJHUIcmnxmksdfjksdjfskdjdjFHFGJHGJJfjsdhfkjsdhfireowruBNBBVBCVFDFSFoiwerunmsadaksdjasdaskkjdkasjdaksd"
+	
+	
+	public static final long JWT_TOKEN_VALIDITY = 2 * 60 * 1000;
 
-	public String generateToken(Authentication auth) {
-        Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
-        String roles = populateAuthorities(authorities);
+	public String doGenerateToken(UserDetails userDetails) {
 
-        String jwt = Jwts.builder()
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000)) // milliseconds
-                .claim("email", auth.getName())
-                .claim("authorities", roles)
-                .signWith(SignatureAlgorithm.HS384,key)
+        return Jwts.builder()
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY)) // converting to milliseconds
+                .signWith(getSignSecretKey(),SignatureAlgorithm.HS256)
                 .compact();
-
-        return jwt;
     }
 	
-	public String getEmailFromToken(String token) {
-		token = token.substring(7);
-		Claims claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJwt(token).getBody();
-    	String email = String.valueOf(claims.get("email"));
-    	return email;
+	
+	public String doGenerateRefreshToken(Map<String,Object> extraClaims, UserDetails userDetails) {
+
+        return Jwts.builder()
+        		.setClaims(extraClaims)
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY)) // converting to milliseconds
+                .signWith(getSignSecretKey(),SignatureAlgorithm.HS256)
+                .compact();
+    }
+	
+	
+	public Key getSignSecretKey() {
+		byte[] key = Decoders.BASE64.decode("4DHF9090FI3NMN4M389DSJDK4738463874JHFJDSHFSDFMCVNXM9834792374923JFHJKDJFHKSD847398");
+		return Keys.hmacShaKeyFor(key);
 	}
 	
-	private String populateAuthorities(Collection<? extends GrantedAuthority> authorities) {
-		Set<String> auth = new HashSet<>();
-		for(GrantedAuthority authority:authorities) {
-			auth.add(authority.getAuthority());
-		}
-		return String.join(",",auth);
-	}
+	public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
+        final Claims claims = getAllClaimsFromToken(token);
+        return claimsResolver.apply(claims);
+    }
+	private Claims getAllClaimsFromToken(String token) {
+        return Jwts.parserBuilder().setSigningKey(getSignSecretKey()).build().parseClaimsJws(token).getBody();
+    }
+	
+	public String getUsernameFromToken(String token) {
+        return getClaimFromToken(token, Claims::getSubject);
+    }
+
+    //retrieve expiration date from jwt token
+    public Date getExpirationDateFromToken(String token) {
+        return getClaimFromToken(token, Claims::getExpiration);
+    }
+
+    private Boolean isTokenExpired(String token) {
+        final Date expiration = getExpirationDateFromToken(token);
+        return expiration.before(new Date());
+    }
+    
+    public Boolean validateToken(String token, UserDetails userDetails) {
+        final String username = getUsernameFromToken(token);
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    }
+	
+	
+//	
+//	public String getEmailFromToken(String token) {
+//		token = token.substring(7);
+//		Claims claims = Jwts.parserBuilder().setSigningKey(getSignKey()).build().parseClaimsJwt(token).getBody();
+//    	String email = String.valueOf(claims.get("email"));
+//    	return email;
+//	}
+//	
+//	private String populateAuthorities(Collection<? extends GrantedAuthority> authorities) {
+//		Set<String> auth = new HashSet<>();
+//		for(GrantedAuthority authority:authorities) {
+//			auth.add(authority.getAuthority());
+//		}
+//		return String.join(",",auth);
+//	}
 }

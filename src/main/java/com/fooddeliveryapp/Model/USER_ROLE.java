@@ -2,9 +2,9 @@ package com.fooddeliveryapp.Model;
 
 public enum USER_ROLE {
 
-	ROLE_USER,
+	ADMIN,
 	
 	ROLE_RESTAURANT_OWNER,
 	
-	ROLE_ADMIN
+	USER
 }

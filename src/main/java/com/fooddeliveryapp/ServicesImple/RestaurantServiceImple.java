@@ -93,7 +93,7 @@ public class RestaurantServiceImple implements restaurantServices {
 
 	@Override
 	public Restaurant getRestaurantByUserId(int id)throws Exception {
-		Restaurant restaurant = restaurantRepository.findByOwnerId(id);
+		Restaurant restaurant = restaurantRepository.findByOwnersId(id);
 		if(restaurant==null) {
 			throw new Exception("Restaurant is not found with owner id :"+id);
 		}
