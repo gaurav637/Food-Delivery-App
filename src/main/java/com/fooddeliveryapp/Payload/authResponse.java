@@ -1,4 +1,5 @@
-package com.fooddeliveryapp.Request;
+package com.fooddeliveryapp.Payload;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,8 +10,9 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class authRequest {
+public class authResponse {
 
+	private String jwtToken;
+    private String refreshToken;
     private String username;
-    private String password;
 }

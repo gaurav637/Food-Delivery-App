@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 public class jwtConstants {
 	
-	public static final String SECRET_KEY = "dhsjdbdjfbjdbfcbnmbcieurieundksdjskdxbcznmbwyetuyqwdhskhdskjdsfsc";
+	public static final String SECRET_KEY = "Gauravnehjhjhghghfdgdrtytrytdffcvcbvcuiuouoisddfsfdtrtyoioioigi";
 	public static final String JWT_HEADER = "Authorization";
 
 }

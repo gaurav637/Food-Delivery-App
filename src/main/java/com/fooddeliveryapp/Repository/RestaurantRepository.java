@@ -14,6 +14,6 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Integer>
     @Query(value = "SELECT * FROM restaurant r WHERE LOWER(r.name) LIKE LOWER(CONCAT('%', :name, '%')) OR LOWER(r.cuisine_type) LIKE LOWER(CONCAT('%', :name, '%'))", nativeQuery = true)
 	public List<Restaurant> getAllSearchRestaurants(@Param("name")String name);
 	
-	public Restaurant findByOwnerId(int id);
+	public Restaurant findByOwnersId(int id);
 
 }
