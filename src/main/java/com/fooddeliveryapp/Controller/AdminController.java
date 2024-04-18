@@ -7,13 +7,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/user")
-public class userController {
-
+@RequestMapping("/api/v1/admin")
+public class AdminController {
+	
 	@GetMapping
 	public ResponseEntity<String> hello(){
-		String str = "Hi User";
+		String str = "Hi Admin";
 		return new ResponseEntity<String>(str,HttpStatus.OK);
 	}
-	
+
 }
