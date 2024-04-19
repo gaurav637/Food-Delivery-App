@@ -25,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 @Configuration
 @EnableWebSecurity
 public class SecurityFilterConfig {
+	
     private JwtAuthenticationEntryPoint point;
     
     @Autowired   
@@ -40,13 +41,16 @@ public class SecurityFilterConfig {
     public SecurityFilterChain filterChain(HttpSecurity security) throws Exception {
         return security.csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.disable())
-                .authorizeHttpRequests(auth -> auth
+                
+                
+                        .authorizeHttpRequests(auth -> auth
                 		.requestMatchers("/api/v1/auth/**")
                         .permitAll()
                 		.requestMatchers("/api/v1/admin").hasAnyAuthority(USER_ROLE.ADMIN.name())
                 		.requestMatchers("/api/v1/user").hasAnyAuthority(USER_ROLE.USER.name())
-                		.anyRequest().authenticated())
-                .exceptionHandling(ex -> ex.authenticationEntryPoint(point))
+                		.anyRequest().authenticated()
+                        )
+                       .exceptionHandling(ex -> ex.authenticationEntryPoint(point))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)
                 .build();

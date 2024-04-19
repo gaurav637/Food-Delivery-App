@@ -2,15 +2,16 @@ package com.fooddeliveryapp.ServicesImple;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.fooddeliveryapp.DTO.RestaurantDto;
 import com.fooddeliveryapp.Exceptions.ResourceNotFoundException;
 import com.fooddeliveryapp.Model.Address;
+import com.fooddeliveryapp.Model.Contact;
 import com.fooddeliveryapp.Model.Restaurant;
 import com.fooddeliveryapp.Model.User;
 import com.fooddeliveryapp.Repository.AddressRepository;
+import com.fooddeliveryapp.Repository.ContactRepository;
 import com.fooddeliveryapp.Repository.RestaurantRepository;
 import com.fooddeliveryapp.Repository.userRepository;
 import com.fooddeliveryapp.Request.CreateRestaurantRequest;
@@ -28,9 +29,13 @@ public class RestaurantServiceImple implements restaurantServices {
 	@Autowired
 	private userRepository uRepository;
 	
+	@Autowired
+	private ContactRepository cRepository;
+	
 	@Override
 	public Restaurant createRestaurant(CreateRestaurantRequest req, User user) {
 		Address address = addressRepository.save(req.getAddress());
+		Contact	contact = cRepository.save(req.getContactInfo());	
 		Restaurant rest = new Restaurant();
 		rest.setOwners(req.getOwners());
 		rest.setOpeningHours(req.getOpeningHours());
@@ -38,10 +43,10 @@ public class RestaurantServiceImple implements restaurantServices {
 		rest.setImages(req.getImages());
 		rest.setDescription(req.getDescription());
 		rest.setCuisineType(req.getCuisineType());
-		rest.setContactInfo(req.getContactInfo());
-		rest.setAddress(req.getAddress());
+		rest.setContactInfo(contact);		
+		rest.setAddress(address);
 		rest.setRegistrationDate(LocalDateTime.now());		
-		Restaurant newRestaurant = restaurantRepository.save(rest);		
+		Restaurant newRestaurant = restaurantRepository.save(rest);	
 		return newRestaurant;
 	}
 

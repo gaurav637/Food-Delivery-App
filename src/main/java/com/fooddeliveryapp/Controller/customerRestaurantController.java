@@ -19,7 +19,7 @@ import com.fooddeliveryapp.Services.restaurantServices;
 import com.fooddeliveryapp.Services.userService;
 
 @RestController
-@RequestMapping("/api/rastaurant")
+@RequestMapping("/api/v1/auth")
 public class customerRestaurantController {
 	
 	@Autowired
@@ -38,7 +38,7 @@ public class customerRestaurantController {
             List<Restaurant> allRestaurants = rServices.getAllRestaurant();
             return ResponseEntity.ok(new ResponseWrapper(allRestaurants, "Valid"));
         } catch (Exception e) {
-            String errorMessage = "Restaurant is Not Exist : " + e.getMessage();
+            String errorMessage = "Restaurant is Not Exist !: " + e.getMessage();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                                  .body(new ResponseWrapper(null, errorMessage));
         }

@@ -14,8 +14,8 @@ public interface userService {
 	
 	@Query(value = "SELECT * FROM user WHERE email = :email1")
 	Optional<User> findUserByEmail(@Param("email1") String email1);
+	
+	public User getUserById(int id);
 
 	
-//	public User findUserById(int id);
-
 }
