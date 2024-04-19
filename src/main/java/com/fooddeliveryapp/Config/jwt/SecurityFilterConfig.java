@@ -46,7 +46,7 @@ public class SecurityFilterConfig {
                         .authorizeHttpRequests(auth -> auth
                 		.requestMatchers("/api/v1/auth/**")
                         .permitAll()
-                		.requestMatchers("/api/v1/admin").hasAnyAuthority(USER_ROLE.ADMIN.name())
+                		.requestMatchers("/api/v1/admin").hasAnyAuthority(USER_ROLE.ADMIN.name(),USER_ROLE.OWNER.name())
                 		.requestMatchers("/api/v1/user").hasAnyAuthority(USER_ROLE.USER.name())
                 		.anyRequest().authenticated()
                         )

@@ -38,6 +38,7 @@ public class RestaurantServiceImple implements restaurantServices {
 		Contact	contact = cRepository.save(req.getContactInfo());	
 		Restaurant rest = new Restaurant();
 		rest.setOwners(req.getOwners());
+		rest.setOwners(user);
 		rest.setOpeningHours(req.getOpeningHours());
 		rest.setName(req.getName());
 		rest.setImages(req.getImages());

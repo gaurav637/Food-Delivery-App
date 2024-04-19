@@ -4,7 +4,7 @@ public enum USER_ROLE {
 
 	ADMIN,
 	
-	ROLE_RESTAURANT_OWNER,
+	OWNER,
 	
 	USER
 }

@@ -15,7 +15,6 @@ import lombok.NoArgsConstructor;
 public class Contact {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
 	private String email;

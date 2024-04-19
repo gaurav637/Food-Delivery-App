@@ -26,13 +26,13 @@ public class FoodDeliveryAppApplication implements CommandLineRunner{
 
 	@Override
 	public void run(String... args) throws Exception {
-		User adminAccount = uRepository.findByRoles(USER_ROLE.ADMIN);
+		User adminAccount = uRepository.findByRoles(USER_ROLE.OWNER);
 		if(adminAccount==null) {
 			User user = new User();
-			user.setEmail("negiAdmin2004@gmail.com");
-			user.setPassword(passwordEncoder.encode("negiAdmin2004"));
+			user.setEmail("NegiOwner2004@gmail.com");
+			user.setPassword(passwordEncoder.encode("negiOwner2004"));
 			user.setFullName("Rahul Negi");
-			user.setRoles(USER_ROLE.ADMIN);
+			user.setRoles(USER_ROLE.OWNER);
 			uRepository.save(user);
 			
 		}
