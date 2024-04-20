@@ -37,7 +37,6 @@ public class RestaurantServiceImple implements restaurantServices {
 		Address address = addressRepository.save(req.getAddress());
 		Contact	contact = cRepository.save(req.getContactInfo());	
 		Restaurant rest = new Restaurant();
-		rest.setOwners(req.getOwners());
 		rest.setOwners(user);
 		rest.setOpeningHours(req.getOpeningHours());
 		rest.setName(req.getName());
@@ -68,9 +67,10 @@ public class RestaurantServiceImple implements restaurantServices {
 	}
 
 	@Override
-	public void deleteRestaurant(int id) {
+	public boolean deleteRestaurant(int id) {
 		Restaurant restaurant = restaurantRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Restaurant","Id",id));
 		restaurantRepository.delete(restaurant);
+		return true;
 	}
 
 	@Override

@@ -45,13 +45,11 @@ public class customerRestaurantController {
         }
 	}
 	
-	@GetMapping("/get-all-search-restaurants")
+	@GetMapping("get-all-search-restaurants")
 	public ResponseEntity<ResponseWrapper> getAllSearchRestaurants(
-			@RequestParam("name") String name,
-			@RequestHeader("Authorization") String token) throws Exception{
+			@RequestParam String name) throws Exception{
 		try {
-            List<Restaurant> allRestaurants = rServices.searchRestaurant(name);
-            User user = uService.findUserByJwtToken(token);          
+            List<Restaurant> allRestaurants = rServices.searchRestaurant(name);       
             return ResponseEntity.ok(new ResponseWrapper(allRestaurants, "Valid"));
         } catch (Exception e) {
             String errorMessage = "Restaurant is not found with Restaurant name : " + e.getMessage();
@@ -63,11 +61,10 @@ public class customerRestaurantController {
 	
 	@GetMapping("/get-restaurant-by-id/{restId}")
 	public ResponseEntity<?> getRestaurantById(
-			@PathVariable("restId") int id,
-			@RequestHeader("Authorization") String token){
+			@PathVariable("restId") int id){
 		try {
 			Restaurant restaurant = rServices.getRestaurantById(id);
-			User user = uService.findUserByJwtToken(token);
+			//User user = uService.findUserByJwtToken(token);
 			return new ResponseEntity<>(restaurant,HttpStatus.OK);
 		}catch(Exception e) {
 			String errorMessage	= "Restaurant is not Present with Restaurant Id :"+e.getMessage();		
@@ -79,10 +76,10 @@ public class customerRestaurantController {
 	@PostMapping("/add-favorite-restaurant/{restId}/user/{userId}")
 	public ResponseEntity<?> addFavoriteRestaurant(
 			@PathVariable("restId") int restId,
-			@PathVariable("userId") int userId,
-			@RequestHeader("Authorization") String token){
+			@PathVariable("userId") int userId){
 		try {
-			User user = uService.findUserByJwtToken(token);
+			//User user = uService.findUserByJwtToken(token);
+			User user = uService.getUserById(userId);
 			RestaurantDto restDto =	rServices.addFavoritesRestaurant(restId, user);
 			return new ResponseEntity<>(restDto,HttpStatus.OK);
 		}catch(Exception e) {

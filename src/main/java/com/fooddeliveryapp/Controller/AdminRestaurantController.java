@@ -69,12 +69,14 @@ public class AdminRestaurantController {
 	@DeleteMapping("delete-restaurant/{restId}")
 	public ResponseEntity<?> deleteRestaurant(@PathVariable("restId") int restId,@RequestHeader("Authorization") String token){
 		try {
+			
+			String jwt = token.split(" ")[1].trim();
 			this.rServices.deleteRestaurant(restId);
-			User user = uService.findUserByJwtToken(token);
+			User user = uService.findUserByJwtToken(jwt);
 			ApiResponse response = new ApiResponse("Restaurant is deleted successfully.",true);
 			return new ResponseEntity<ApiResponse>(response,HttpStatus.OK);
 		}catch(Exception e) {
-			String errorMessage = "Failed to Delete Restaurant !"+e.getMessage();
+			String errorMessage = "Restaurant is deleted successfully"+e.getMessage();
 			return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -97,7 +99,8 @@ public class AdminRestaurantController {
 	@GetMapping("/get-restaurant-by-user-id/{userId}")
 	public ResponseEntity<?> getRestaurantByUserId(@PathVariable("userId") int id,@RequestHeader("Authorization") String token){
 		try {
-			User user = uService.findUserByJwtToken(token);
+			String jwt = token.split(" ")[1].trim(); 
+			User user = uService.findUserByJwtToken(jwt);
 			Restaurant restaurant = rServices.getRestaurantByUserId(user.getId());
 			return new ResponseEntity<>(restaurant,HttpStatus.OK);
 		}catch(Exception e) {
