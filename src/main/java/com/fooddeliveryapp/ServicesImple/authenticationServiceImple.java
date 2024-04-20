@@ -9,12 +9,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.fooddeliveryapp.Config.JwtProvider;
+import com.fooddeliveryapp.DTO.refreshTokenValidation;
 import com.fooddeliveryapp.Exceptions.UsernameNotFoundException;
 import com.fooddeliveryapp.Model.User;
 import com.fooddeliveryapp.Payload.authRequest;
 import com.fooddeliveryapp.Payload.authResponse;
 import com.fooddeliveryapp.Repository.userRepository;
 import com.fooddeliveryapp.Services.authenticationServices;
+import com.fooddeliveryapp.Services.userService;
+
+import lombok.experimental.var;
 
 
 @Service
@@ -32,6 +36,9 @@ public class authenticationServiceImple implements authenticationServices {
 	@Autowired
 	private JwtProvider jProvider;
 	
+	@Autowired
+	private userService uService;
+	
 	
 	public User signUpUser(User user) {
 		User createdUser = new User();
@@ -46,8 +53,14 @@ public class authenticationServiceImple implements authenticationServices {
 
 	@Override
 	public authResponse signInUser(authRequest auth) {
+		
+		System.out.println("Hello world ------------------------------------>>>");
 		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(auth.getUsername(), auth.getPassword()));
-		var user = uRepository.findByEmail(auth.getUsername()).orElseThrow(()-> new UsernameNotFoundException("user not found with email",auth.getUsername()));
+		
+		
+		System.out.println("Hello world after sign request------------->>>>>>>>>>>>>>>>>>>> ");
+		
+		var user = uService.findUserByEmail(auth.getUsername()).orElseThrow(()-> new UsernameNotFoundException("user not found with email",auth.getUsername()));
 		var jwt = jProvider.doGenerateToken(user);
 		var refreshToken = jProvider.doGenerateRefreshToken(new HashMap<>(),user);
 		authResponse aResponse = new authResponse();
@@ -57,5 +70,20 @@ public class authenticationServiceImple implements authenticationServices {
 		aResponse.setUsername(user2);
 		return aResponse;
 				
+	}
+	
+	public authResponse refreshToken(refreshTokenValidation refreshTokenValidation) {
+		String userEmail = jProvider.getUsernameFromToken(refreshTokenValidation.getToken());
+		User user = uRepository.findByEmail(userEmail).orElseThrow(()-> new UsernameNotFoundException("Username",userEmail));
+		if(jProvider.validateToken(refreshTokenValidation.getToken(),user)) {
+			var jwt  = jProvider.doGenerateToken(user);
+			authResponse aResponse = new authResponse();
+			aResponse.setJwtToken(jwt);
+			aResponse.setRefreshToken(refreshTokenValidation.getToken());
+			String user2 = jProvider.getUsernameFromToken(jwt);
+			aResponse.setUsername(user2);
+			return aResponse;
+		}
+		return null;
 	}
 }

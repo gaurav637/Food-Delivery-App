@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.fooddeliveryapp.Config.JwtProvider;
+import com.fooddeliveryapp.DTO.refreshTokenValidation;
 import com.fooddeliveryapp.Model.User;
 import com.fooddeliveryapp.Payload.authRequest;
 import com.fooddeliveryapp.Payload.authResponse;
@@ -44,9 +45,6 @@ public class authController {
     @PostMapping("/signUp")
     public ResponseEntity<?> createUserHandler(@RequestBody User user)throws Exception {
     	Optional<User> isUserExist =  uService.findUserByEmail(user.getEmail());
-    	System.out.println("User email address >>>>>>>>>>>>>> ------"+user.getEmail());
-    	System.out.println("isUserExist value -----------"+isUserExist);
-    	//System.out.println("User ")
     	if(isUserExist.isPresent()) {
     		log.info("Email is already used");
     		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse("Email is already used!",false));
@@ -61,4 +59,11 @@ public class authController {
 		authResponse response = aServices.signInUser(aRequest);	
     	return new ResponseEntity<authResponse>(response,HttpStatus.OK);	
 	}
+    
+    @PostMapping("/refresh")
+    public ResponseEntity<authResponse> RefreshToken(@RequestBody refreshTokenValidation aRequest){
+		authResponse response = aServices.refreshToken(aRequest);	
+    	return new ResponseEntity<authResponse>(response,HttpStatus.OK);	
+	}
+    
 }

@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.function.Function;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -15,18 +16,14 @@ import io.jsonwebtoken.security.Keys;
 @Service
 public class JwtProvider {
 	
-	//private SecretKey key = Keys.hmacShaKeyFor(jwtConstants.SECRET_KEY.getBytes());
-	//private String key = "shdsdsireoiroemcxnGVHGHJJHUIcmnxmksdfjksdjfskdjdjFHFGJHGJJfjsdhfkjsdhfireowruBNBBVBCVFDFSFoiwerunmsadaksdjasdaskkjdkasjdaksd"
-	
-	
-	public static final long JWT_TOKEN_VALIDITY = 2 * 60 * 1000;
+	public static final long JWT_TOKEN_VALIDITY =  7 * 24 * 60 * 60 * 1000;// seven days 
 
 	public String doGenerateToken(UserDetails userDetails) {
 
         return Jwts.builder()
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY)) // converting to milliseconds
+                .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY))
                 .signWith(getSignSecretKey(),SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -38,7 +35,7 @@ public class JwtProvider {
         		.setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY)) // converting to milliseconds
+                .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY))
                 .signWith(getSignSecretKey(),SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -48,6 +45,36 @@ public class JwtProvider {
 		byte[] key = Decoders.BASE64.decode("4DHF9090FI3NMN4M389DSJDK4738463874JHFJDSHFSDFMCVNXM9834792374923JFHJKDJFHKSD847398");
 		return Keys.hmacShaKeyFor(key);
 	}
+	
+////	public Key getSignSecretKey() {
+////	    String base64EncodedKey = "NERIRjkwOTAxRkkzTk1OMU0zODlEU0pESzQ3Mzg0NjM4NzRKSEZKRFNI" +
+////	                              "RlNERkNDVk5YTjk4MzQ3OTIzNzQ5MjNKRkhKS0RKRkhLU0Q4NDczOTg=";
+////	    byte[] keyBytes = Base64.getDecoder().decode(base64EncodedKey);
+////	    return new SecretKeySpec(keyBytes, "HmacSHA256");
+////	}
+////	
+//	
+//	
+//	public SecretKey getSignSecretKey() {
+//	    // Read secret key from a secure location (e.g., environment variable)
+//	    String base64UrlEncodedKey = System.getenv("SECRET_KEY");
+//
+//	    byte[] decodedKeyBytes = base64UrlDecode(base64UrlEncodedKey);
+//	    return new SecretKeySpec(decodedKeyBytes, "HmacSHA256");
+//	}
+//
+//	private byte[] base64UrlDecode(String base64UrlEncodedKey) {
+//	    // Explain the purpose of character replacement
+//	    String base64EncodedKey = base64UrlEncodedKey
+//	            .replace('-', '+') // Convert '-' to '+' for Base64 decoding
+//	            .replace('_', '/'); // Convert '_' to '/' for Base64 decoding
+//
+//	    return Base64.getUrlDecoder().decode(base64EncodedKey);
+//	}
+	
+	
+	
+	
 	
 	public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = getAllClaimsFromToken(token);
@@ -76,20 +103,5 @@ public class JwtProvider {
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 	
-	
-//	
-//	public String getEmailFromToken(String token) {
-//		token = token.substring(7);
-//		Claims claims = Jwts.parserBuilder().setSigningKey(getSignKey()).build().parseClaimsJwt(token).getBody();
-//    	String email = String.valueOf(claims.get("email"));
-//    	return email;
-//	}
-//	
-//	private String populateAuthorities(Collection<? extends GrantedAuthority> authorities) {
-//		Set<String> auth = new HashSet<>();
-//		for(GrantedAuthority authority:authorities) {
-//			auth.add(authority.getAuthority());
-//		}
-//		return String.join(",",auth);
-//	}
+
 }

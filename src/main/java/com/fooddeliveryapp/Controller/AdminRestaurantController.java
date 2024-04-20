@@ -20,6 +20,9 @@ import com.fooddeliveryapp.Response.ApiResponse;
 import com.fooddeliveryapp.Services.restaurantServices;
 import com.fooddeliveryapp.Services.userService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RestController
 @RequestMapping("api/v1/admin")
 public class AdminRestaurantController {
@@ -33,18 +36,20 @@ public class AdminRestaurantController {
 	@Autowired
 	private userRepository uRepository;
 	
-	@PostMapping("/create")
+	@PostMapping("create")
 	public ResponseEntity<?> createRestaurant(
 			@RequestBody CreateRestaurantRequest req,
-			@RequestHeader("Authorization") String str) throws Exception{
-		
+			@RequestHeader("Authorization") String jwt) throws Exception{
+				
 		try {	
-			User user = uService.findUserByJwtToken(str);
+			String jwt1 = jwt.split(" ")[1].trim();
+			
+			User user = uService.findUserByJwtToken(jwt1);			
 			Restaurant restaurant = rServices.createRestaurant(req, user);
 			return new ResponseEntity<Restaurant>(restaurant,HttpStatus.CREATED);
 			
 		}catch(Exception e) {
-			String errorMessage = "Failed to create Restaurant !"+e.getMessage();
+			String errorMessage = "Failed to create Restaurant:: !"+e.getMessage();
 			return new ResponseEntity<>(errorMessage ,HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -75,13 +80,13 @@ public class AdminRestaurantController {
 	}
 	
 	
-	@GetMapping("/update-restaurant-status/{restId}")
+	@PutMapping("/update-restaurant-status/{restId}")
 	public ResponseEntity<?> updateRestaurantStatusInController(@PathVariable("restId") int id,@RequestHeader("Authorization") String token){
 		try {
-			  
+			String jwt = token.split(" ")[1].trim(); 
 			Restaurant rest = rServices.updateRestaurantStatus(id);
-			User user = uService.findUserByJwtToken(token);
-			return new ResponseEntity<>(rest,HttpStatus.INTERNAL_SERVER_ERROR);
+			User user = uService.findUserByJwtToken(jwt);
+			return new ResponseEntity<>(rest,HttpStatus.OK);
 			
 		}catch(Exception e) {
 			String errorMessage = "Failed to update Restaurant status!"+e.getMessage();
