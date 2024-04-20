@@ -127,7 +127,13 @@ public class RestaurantServiceImple implements restaurantServices {
 	@Override
 	public Restaurant updateRestaurantStatus(int id) {
 		Restaurant restaurant = restaurantRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Restaurant","Id",id));
-		restaurant.setOpen(!restaurant.isOpen());		
+		boolean ans = restaurant.isOpen();
+		if(ans==false) {
+			restaurant.setOpen(true);		
+		}else {
+			restaurant.setOpen(false);	
+		}
+			
 		return restaurantRepository.save(restaurant);
 	}
 

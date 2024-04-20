@@ -80,13 +80,13 @@ public class AdminRestaurantController {
 	}
 	
 	
-	@GetMapping("/update-restaurant-status/{restId}")
+	@PutMapping("/update-restaurant-status/{restId}")
 	public ResponseEntity<?> updateRestaurantStatusInController(@PathVariable("restId") int id,@RequestHeader("Authorization") String token){
 		try {
-			  
+			String jwt = token.split(" ")[1].trim(); 
 			Restaurant rest = rServices.updateRestaurantStatus(id);
-			User user = uService.findUserByJwtToken(token);
-			return new ResponseEntity<>(rest,HttpStatus.INTERNAL_SERVER_ERROR);
+			User user = uService.findUserByJwtToken(jwt);
+			return new ResponseEntity<>(rest,HttpStatus.OK);
 			
 		}catch(Exception e) {
 			String errorMessage = "Failed to update Restaurant status!"+e.getMessage();

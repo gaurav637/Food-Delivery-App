@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -45,7 +46,9 @@ public class customerRestaurantController {
 	}
 	
 	@GetMapping("/get-all-search-restaurants")
-	public ResponseEntity<ResponseWrapper> getAllSearchRestaurants(@RequestParam("name") String name,@RequestHeader("Authorization") String token) throws Exception{
+	public ResponseEntity<ResponseWrapper> getAllSearchRestaurants(
+			@RequestParam("name") String name,
+			@RequestHeader("Authorization") String token) throws Exception{
 		try {
             List<Restaurant> allRestaurants = rServices.searchRestaurant(name);
             User user = uService.findUserByJwtToken(token);          
@@ -59,7 +62,9 @@ public class customerRestaurantController {
 	}
 	
 	@GetMapping("/get-restaurant-by-id/{restId}")
-	public ResponseEntity<?> getRestaurantById(@PathVariable("restId") int id,@RequestHeader("Authorization") String token){
+	public ResponseEntity<?> getRestaurantById(
+			@PathVariable("restId") int id,
+			@RequestHeader("Authorization") String token){
 		try {
 			Restaurant restaurant = rServices.getRestaurantById(id);
 			User user = uService.findUserByJwtToken(token);
@@ -71,8 +76,11 @@ public class customerRestaurantController {
 	}
 	
 	
-	@GetMapping("/add-favorite-restaurant/{restId}/user/{userId}")
-	public ResponseEntity<?> addFavoriteRestaurant(@PathVariable("restId") int restId,@PathVariable("userId") int userId,@RequestHeader("Authorization") String token){
+	@PostMapping("/add-favorite-restaurant/{restId}/user/{userId}")
+	public ResponseEntity<?> addFavoriteRestaurant(
+			@PathVariable("restId") int restId,
+			@PathVariable("userId") int userId,
+			@RequestHeader("Authorization") String token){
 		try {
 			User user = uService.findUserByJwtToken(token);
 			RestaurantDto restDto =	rServices.addFavoritesRestaurant(restId, user);
@@ -82,6 +90,8 @@ public class customerRestaurantController {
 			return new ResponseEntity<>(errorMessage,HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	
 	
 	
 }

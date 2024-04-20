@@ -50,7 +50,7 @@ public class User implements UserDetails{
 	@ElementCollection
 	private List<RestaurantDto> favorite = new ArrayList<>();
 	
-	@OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL)
 	private List<Address> address =  new ArrayList<>();
 	
 	@OneToMany
