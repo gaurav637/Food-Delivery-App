@@ -53,13 +53,7 @@ public class authenticationServiceImple implements authenticationServices {
 
 	@Override
 	public authResponse signInUser(authRequest auth) {
-		
-		System.out.println("Hello world ------------------------------------>>>");
 		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(auth.getUsername(), auth.getPassword()));
-		
-		
-		System.out.println("Hello world after sign request------------->>>>>>>>>>>>>>>>>>>> ");
-		
 		var user = uService.findUserByEmail(auth.getUsername()).orElseThrow(()-> new UsernameNotFoundException("user not found with email",auth.getUsername()));
 		var jwt = jProvider.doGenerateToken(user);
 		var refreshToken = jProvider.doGenerateRefreshToken(new HashMap<>(),user);

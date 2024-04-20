@@ -13,7 +13,7 @@ public interface restaurantServices {
 	
 	public Restaurant updateRestaurant(int id,CreateRestaurantRequest updatedRestaurant);
 	
-	public void deleteRestaurant(int id);
+	public boolean deleteRestaurant(int id);
 	
 	public List<Restaurant> getAllRestaurant()throws Exception;
 	
