@@ -2,10 +2,10 @@ package com.fooddeliveryapp.Services;
 
 import java.util.List;
 
+import com.fooddeliveryapp.DTO.CreateRestaurantRequest;
 import com.fooddeliveryapp.DTO.RestaurantDto;
 import com.fooddeliveryapp.Model.Restaurant;
 import com.fooddeliveryapp.Model.User;
-import com.fooddeliveryapp.Request.CreateRestaurantRequest;
 
 public interface restaurantServices {
 	

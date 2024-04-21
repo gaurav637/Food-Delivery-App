@@ -12,10 +12,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.fooddeliveryapp.DTO.CreateRestaurantRequest;
 import com.fooddeliveryapp.Model.Restaurant;
 import com.fooddeliveryapp.Model.User;
 import com.fooddeliveryapp.Repository.userRepository;
-import com.fooddeliveryapp.Request.CreateRestaurantRequest;
 import com.fooddeliveryapp.Response.ApiResponse;
 import com.fooddeliveryapp.Services.restaurantServices;
 import com.fooddeliveryapp.Services.userService;
