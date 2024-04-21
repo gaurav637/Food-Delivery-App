@@ -2,6 +2,8 @@ package com.fooddeliveryapp.ServicesImple;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.fooddeliveryapp.Exceptions.ResourceNotFoundException;
 import com.fooddeliveryapp.Model.Category;
 import com.fooddeliveryapp.Model.Restaurant;
@@ -12,6 +14,8 @@ import com.fooddeliveryapp.Services.CategoryServices;
 import com.fooddeliveryapp.Services.restaurantServices;
 import com.fooddeliveryapp.Services.userService;
 
+
+@Service
 public class CategoryServicesImple implements CategoryServices{
 	
 	@Autowired
