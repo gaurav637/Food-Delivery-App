@@ -10,6 +10,8 @@ public class addCartItemRequest {
 	
 	private int quantity;
 	
+	private Long price;
+	
 	private List<String> ingredients;
 
 }

@@ -35,5 +35,5 @@ public class CartItem {
 	
 	private List<String> ingredients;
 	
-	private int totalPrice;
+	private Long totalPrice;
 }
