@@ -1,3 +1,4 @@
+
 package com.fooddeliveryapp.Config;
 
 import java.security.Key;
@@ -16,7 +17,7 @@ import io.jsonwebtoken.security.Keys;
 @Service
 public class JwtProvider {
 	
-	public static final long JWT_TOKEN_VALIDITY =  7 * 24 * 60 * 60 * 1000;// seven days 
+	public static final long JWT_TOKEN_VALIDITY =  7 * 24 * 60 * 60 * 1000;// one week
 
 	public String doGenerateToken(UserDetails userDetails) {
 

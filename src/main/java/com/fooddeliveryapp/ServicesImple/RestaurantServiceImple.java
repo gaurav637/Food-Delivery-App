@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.fooddeliveryapp.DTO.CreateRestaurantRequest;
 import com.fooddeliveryapp.DTO.RestaurantDto;
 import com.fooddeliveryapp.Exceptions.ResourceNotFoundException;
 import com.fooddeliveryapp.Model.Address;
@@ -14,7 +16,6 @@ import com.fooddeliveryapp.Repository.AddressRepository;
 import com.fooddeliveryapp.Repository.ContactRepository;
 import com.fooddeliveryapp.Repository.RestaurantRepository;
 import com.fooddeliveryapp.Repository.userRepository;
-import com.fooddeliveryapp.Request.CreateRestaurantRequest;
 import com.fooddeliveryapp.Services.restaurantServices;
 
 @Service
