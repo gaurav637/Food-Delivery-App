@@ -1,6 +1,7 @@
 package com.fooddeliveryapp.ServicesImple;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import com.fooddeliveryapp.DTO.addCartItemRequest;
 import com.fooddeliveryapp.Exceptions.ResourceNotFoundException;
 import com.fooddeliveryapp.Model.Cart;
@@ -13,6 +14,7 @@ import com.fooddeliveryapp.Services.CartServices;
 import com.fooddeliveryapp.Services.FoodServices;
 import com.fooddeliveryapp.Services.userService;
 
+@Service
 public class CartServiceImple implements CartServices{
 	
 	@Autowired
@@ -87,6 +89,7 @@ public class CartServiceImple implements CartServices{
 	@Override
 	public Cart findCartById(int id) {
 		Cart cart = cRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Cart","id",id));
+		cart.setTotal(calculateTotalCarts(cart));
 		return cart;
 	}
 

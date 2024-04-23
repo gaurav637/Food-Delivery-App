@@ -1,9 +1,7 @@
 package com.fooddeliveryapp.Model;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
