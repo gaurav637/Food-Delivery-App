@@ -82,7 +82,7 @@ public class CartController {
 		
 	}
 	
-	@GetMapping(user/calcul)
+	@GetMapping("user/calculate-total-carts")
 	public ResponseEntity<?> calculateTotalCartsInController(
 			@RequestBody Cart cart,
 			@RequestHeader("Authorization") String token){
@@ -97,5 +97,54 @@ public class CartController {
 			return new ResponseEntity<>(errorMessage,HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	@GetMapping("find-cart-by-id/{cartId}")
+	public ResponseEntity<?> findcartByIdInController(
+			@PathVariable("cartId") int cartId,
+			@RequestHeader("Authorization") String token){
+		
+		try {
+			String jwt = token.split(" ")[1].trim();
+			User user = uService.findUserByJwtToken(jwt);
+			Cart cart2 = ctServices.findCartById(cartId);
+			return new ResponseEntity<>(cart2,HttpStatus.OK);
+		}catch(Exception e) {
+			String errorMessage = "Failed to find cart with id!!"+e.getMessage();
+			return new ResponseEntity<>(errorMessage,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@GetMapping("find-cart-by-user-id/{cartId}")
+	public ResponseEntity<?> findcartByUserIdInController(
+			@PathVariable("cartId") int cartId,
+			@RequestHeader("Authorization") String token){
+		
+		try {
+			String jwt = token.split(" ")[1].trim();
+			User user = uService.findUserByJwtToken(jwt);
+			Cart cart2 = ctServices.findCartByUserId(cartId);
+			return new ResponseEntity<>(cart2,HttpStatus.OK);
+		}catch(Exception e) {
+			String errorMessage = "Failed to find cart by user id!!"+e.getMessage();
+			return new ResponseEntity<>(errorMessage,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@PutMapping("clear-cart-user-id/{cartId}")
+	public ResponseEntity<?> clearCartInController(
+			@PathVariable("userId") int userId,
+			@RequestHeader("Authorization") String token){
+		
+		try {
+			String jwt = token.split(" ")[1].trim();
+			User user = uService.findUserByJwtToken(jwt);
+			Cart cart2 = ctServices.clearCart(userId);
+			return new ResponseEntity<>(cart2,HttpStatus.OK);
+		}catch(Exception e) {
+			String errorMessage = "Failed to clear cart with user id!"+e.getMessage();
+			return new ResponseEntity<>(errorMessage,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
 
 }

@@ -18,14 +18,17 @@ import com.fooddeliveryapp.Model.User;
 import com.fooddeliveryapp.Services.IngredientsServices;
 import com.fooddeliveryapp.Services.userService;
 
+import lombok.RequiredArgsConstructor;
+
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("api/v1")
 public class IngredientsController {
 	
-	@Autowired
+	
 	private IngredientsServices iServices;
 	
-	@Autowired
+	
 	private userService uService;
 	
 	

@@ -12,21 +12,24 @@ import com.fooddeliveryapp.Repository.IngredientsItemRepository;
 import com.fooddeliveryapp.Services.IngredientsServices;
 import com.fooddeliveryapp.Services.restaurantServices;
 
+import lombok.RequiredArgsConstructor;
+
 
 @Service
+@RequiredArgsConstructor
 public class IngredientsServiceImple implements IngredientsServices{
 	
-	@Autowired
+	
 	private IngredientsCategoryRepository icRepository;
 	
-	@Autowired
+	
 	private IngredientsItemRepository IiRepository;
 	
-	@Autowired
+	
 	private restaurantServices rest;
 	
-	@Autowired
-	private IngredientsServices iServices;
+	
+	private IngredientsServices inServices;
 	
 	
 
@@ -59,7 +62,7 @@ public class IngredientsServiceImple implements IngredientsServices{
 	public IngredientsItem createIngredientsItems(int restId, String ingredientsName, int categoryId) {
 		IngredientsItem ingredientsItem = new IngredientsItem();
 		Restaurant restaurant = rest.getRestaurantById(restId);
-		IngredientsCategory category = iServices.findIngredientsCategoryById(categoryId);
+		IngredientsCategory category = inServices.findIngredientsCategoryById(categoryId);
 	    ingredientsItem.setCategory(category);
 	    ingredientsItem.setName(ingredientsName);
 	    ingredientsItem.setRestaurant(restaurant);
