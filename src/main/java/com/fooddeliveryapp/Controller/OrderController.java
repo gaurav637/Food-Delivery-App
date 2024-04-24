@@ -63,7 +63,7 @@ public class OrderController {
 		}
 	}
 	
-	@DeleteMapping("user/delete-order")
+	@DeleteMapping("user/delete-order/{orderId}")
 	public ResponseEntity<ApiResponse> deleteOrder(
 			@PathVariable("orderId") int orderId,
 			@RequestHeader("Authorization") String token) throws Exception{
@@ -87,7 +87,7 @@ public class OrderController {
 		}
 	}
 	
-	@GetMapping("user/get-restaurant-orders")
+	@GetMapping("user/get-restaurant-orders/{restId}")
 	public ResponseEntity<?> getRestaurantOrdersInController(
 			@PathVariable("restId") int restId,
 			@RequestParam String status,

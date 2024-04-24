@@ -1,11 +1,9 @@
 package com.fooddeliveryapp.Controller;
 
-import org.antlr.v4.runtime.misc.TestRig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -41,13 +39,13 @@ public class AdminFoodController {
 			@RequestHeader("Authorization") String token) throws Exception{
 		
 		 try {
-			 String jwt = token.split(" ")[1].trim();
+			    String jwt = token.split(" ")[1].trim();
 		        User user = uService.findUserByJwtToken(jwt);
 		        Restaurant restaurant = rest.getRestaurantById(req.getRestId());
 		        Foods foods = fServices.createFood(req, req.getFoodCategory(),restaurant);
 				return 	new ResponseEntity<>(foods,HttpStatus.OK);
 		 }catch(Exception e) {
-			 String errorMessage = "Failed to create new Food"+e.getMessage();
+			 String errorMessage = "Failed to create new Food :"+e.getMessage();
 			 return new ResponseEntity<>(errorMessage,HttpStatus.INTERNAL_SERVER_ERROR);
 		 }
 	}

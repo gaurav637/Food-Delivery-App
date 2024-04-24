@@ -25,14 +25,14 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("api/v1")
 public class IngredientsController {
 	
-	
+	@Autowired
 	private IngredientsServices iServices;
 	
-	
+	@Autowired
 	private userService uService;
 	
 	
-	@PostMapping("admin-create-ingredients-category")
+	@PostMapping("/admin/create-ingredients-category/{restId}")
 	public ResponseEntity<?> createIngredientsCategory(
 			@RequestParam String name, 
 			@PathVariable("restId") int id,
@@ -40,7 +40,7 @@ public class IngredientsController {
 		
 		try {
 			String jwt = token.split(" ")[1].trim();
-			User user = uService.findUserByJwtToken(token);
+			//User user = uService.findUserByJwtToken(jwt);
 			
 			IngredientsCategory ingredients = iServices.createIngredientsCategory(name, id);
 			return new ResponseEntity<>(ingredients,HttpStatus.CREATED);
@@ -58,7 +58,7 @@ public class IngredientsController {
 		
 		   try {
 			   String jwt = token.split(" ")[1].trim();
-			   User user = uService.findUserByJwtToken(token);
+			   User user = uService.findUserByJwtToken(jwt);
 			   IngredientsCategory ingredientsCategory = iServices.findIngredientsCategoryById(inCateId);
 			   return new ResponseEntity<>(ingredientsCategory,HttpStatus.OK);
 		   }catch(Exception e) {
@@ -84,7 +84,7 @@ public class IngredientsController {
 		
 	}
 	
-	@PostMapping("admin-create-ingredientsitem-restid/{restId}/category-id/{InCateId}")
+	@PostMapping("admin/create-ingredientsitem-restid/{restId}/category-id/{InCateId}")
 	public ResponseEntity<?> createIngredientsItemInController(
 			@PathVariable("restId") int restId,
 			@RequestParam String name,
@@ -103,7 +103,7 @@ public class IngredientsController {
 			}
 	}
 	
-	@GetMapping("user/find-ingredients-in-restaurant/{restId}")
+	@GetMapping("user/find-all-ingredients-in-restaurant/{restId}")
 	public ResponseEntity<?> findRestaurantIngredientsInController(
 			@PathVariable("restId") int restId,
 			@RequestHeader("Authorization") String token) throws Exception{
@@ -122,7 +122,7 @@ public class IngredientsController {
 		
 	}
 	
-	@PutMapping("admin/update/stock/status")
+	@PutMapping("admin/update/stock/status/{id}")
 	public ResponseEntity<?> updateStockStatus(@PathVariable("id") int id,@RequestHeader("Authorization") String token){
 		
 		 try {

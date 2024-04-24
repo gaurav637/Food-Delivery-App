@@ -9,9 +9,15 @@ import com.fooddeliveryapp.DTO.CreateFoodRequest;
 import com.fooddeliveryapp.Exceptions.ResourceNotFoundException;
 import com.fooddeliveryapp.Model.Category;
 import com.fooddeliveryapp.Model.Foods;
+import com.fooddeliveryapp.Model.IngredientsCategory;
+import com.fooddeliveryapp.Model.IngredientsItem;
 import com.fooddeliveryapp.Model.Restaurant;
+import com.fooddeliveryapp.Repository.CategoryRepository;
 import com.fooddeliveryapp.Repository.FoodRepository;
+import com.fooddeliveryapp.Repository.IngredientsCategoryRepository;
+import com.fooddeliveryapp.Repository.IngredientsItemRepository;
 import com.fooddeliveryapp.Response.ApiResponse;
+import com.fooddeliveryapp.Services.CategoryServices;
 import com.fooddeliveryapp.Services.FoodServices;
 
 @Service
@@ -19,9 +25,55 @@ public class FoodServicesImple implements FoodServices {
 	
 	@Autowired
 	private FoodRepository fRepository;
+	
+	@Autowired
+	private CategoryRepository cRepository;
+	
+	@Autowired
+	private IngredientsItemRepository iItemRepository;
+		
+	@Autowired
+	private IngredientsCategoryRepository inCateRepository;
+	
 
-	@Override
-	public Foods createFood(CreateFoodRequest request, Category category, Restaurant restaurant) {
+//	public Foods createFood(CreateFoodRequest request, Category category, Restaurant restaurant) {
+//	    Category savedCategory = cRepository.save(category);
+//	    List<IngredientsItem> savedItems = new ArrayList<>();
+//	    for (IngredientsItem item : request.getIngredients()) {
+//	        //item.setCategory(savedCategory); 
+//	        savedItems.add(iItemRepository.save(item)); 
+//	    }
+//	    Foods newFood = new Foods();
+//	    newFood.setVegetarian(request.isVegetarian());
+//	    newFood.setSeasonal(request.isSeasonal());
+//	    newFood.setPrice(request.getPrice());
+//	    newFood.setName(request.getName());
+//	    newFood.setIngredients(savedItems); 
+//	    newFood.setImages(request.getImages());
+//	    newFood.setFoodCategory(savedCategory); 
+//	    newFood.setDescription(request.getDescription());
+//	    newFood.setCreateDate(new Date());
+//	    newFood.setAvailable(request.isAvailable());
+//	    newFood.setRestaurant(restaurant);
+//	    restaurant.getFoods().add(newFood);
+//	    Foods food = fRepository.save(newFood);
+//	    return food;
+//	}
+	  List<String> nameList = new ArrayList<>();
+      public Foods createFood(CreateFoodRequest request, Category category, Restaurant restaurant) throws Exception {
+    	 
+	    List<Category> ct = new ArrayList<Category>();
+	    if(nameList.contains(request.getName()) && ct.contains(request.getFoodCategory())) {
+	    	throw new Exception("Food is already present in restaurant");
+	    	
+	    }
+	    nameList.add(request.getName());
+	    ct.add(request.getFoodCategory());
+		Category savedCategory = cRepository.save(category);
+		//List<IngredientsItem> items = request.getIngredients();
+		//List<IngredientsItem> inCate = request.getIngredients();
+		
+		//iItemRepository.saveAll(items);
 		Foods newFood = new Foods();
 		newFood.setVegetarian(request.isVegetarian());
 		newFood.setSeasonal(request.isSeasonal());
@@ -33,12 +85,12 @@ public class FoodServicesImple implements FoodServices {
 		newFood.setDescription(request.getDescription());	
 		newFood.setCreateDate(new Date());
 		newFood.setAvailable(request.isAvailable());
-		newFood.setFoodCategory(category);
+		newFood.setFoodCategory(savedCategory);
 		newFood.setRestaurant(restaurant);
 		restaurant.getFoods().add(newFood);
 		Foods food = fRepository.save(newFood);
-		return null;
-	}
+		return food;
+	} 
 
 	@Override
 	public List<Foods> getRestaurantFoods(int restId, boolean isVagetarian1, boolean isNonVage1, boolean isSeasonal1,
@@ -71,7 +123,8 @@ public class FoodServicesImple implements FoodServices {
 		Foods foods = fRepository.findById(foodId).orElseThrow(()-> new ResourceNotFoundException("Foods","FoodId",foodId));
         try {
         	 foods.setRestaurant(null);
-     		fRepository.save(foods);
+        	 fRepository.delete(foods);
+     		//fRepository.save(foods);
      		ApiResponse response = new ApiResponse("Food is deleted successfully.",true); 
      		return response;     	
      	}catch (Exception e) {
