@@ -6,4 +6,4 @@ This Spring Boot-based food delivery application offers a streamlined solution f
 
 
 
-![FoodDelivery drawio](https://github.com/gaurav637/Food-Delivery-App/assets/141955844/77e097cc-df5e-4e7c-b447-f64ff9621d0e)
+<img width="1053" alt="Screenshot 2024-04-24 at 11 40 07 PM" src="https://github.com/gaurav637/Food-Delivery-App/assets/141955844/f33d0db6-5ada-4429-8967-f0db94c123df">
