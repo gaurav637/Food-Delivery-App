@@ -37,7 +37,7 @@ public class UserFoodController {
 		
 		try {
 			String jwt = token.split(" ")[1].trim();
-			User user = uService.findUserByJwtToken(token);
+			User user = uService.findUserByJwtToken(jwt);
 			List<Foods> foods = fServices.searchFood(keyword);
 			return new ResponseEntity<>(foods,HttpStatus.OK);
 		}catch (Exception e) {

@@ -19,6 +19,8 @@ import com.fooddeliveryapp.Model.Orders;
 import com.fooddeliveryapp.Model.Restaurant;
 import com.fooddeliveryapp.Model.User;
 import com.fooddeliveryapp.Repository.AddressRepository;
+import com.fooddeliveryapp.Repository.CartItemRepository;
+import com.fooddeliveryapp.Repository.CartRepository;
 import com.fooddeliveryapp.Repository.OrderRepository;
 import com.fooddeliveryapp.Repository.RestaurantRepository;
 import com.fooddeliveryapp.Repository.orderItemRepository;
@@ -48,37 +50,67 @@ public class OrdersServicesImple implements OrderServices{
 	@Autowired
 	private CartServices cartServices;
 	
+	@Autowired
+	private CartRepository ctRepository;
+	
+	@Autowired
+	private CartItemRepository crtRepository;
 	
 	@Override
 	public Orders createOrders(orderRequest request, User user) throws Exception {
 		Orders orders = new Orders();
+		//Cart c1 = request.getCart();
+		//ctRepository.save(c1);
 		Address deliveryAddress = request.getDeliveryAddress();
 		Address address = addressRepository.save(deliveryAddress);
 		if(!user.getAddress().contains(address)) {
 			user.getAddress().add(address);
 			uRepository.save(user);
 		}
+		
 		Restaurant restaurant = restRepository.findById(request.getRestaurantId()).orElseThrow(()-> new ResourceNotFoundException("Restaurant","Id",request.getRestaurantId()));
 		orders.setCreatedAT(new Date());
 		orders.setCustomer(user);
 		orders.setDeliveryAddress(address);
 		orders.setOrderStatus("PENDING");
 		orders.setRestaurant(restaurant);
-		Cart cart = cartServices.findCartByUserId(user.getId());
-		List<OrderItem> orderItems = new ArrayList<>();
-		for(CartItem cartItem: cart.getCartItem()) {
-			OrderItem oItem = new OrderItem();
-			oItem.setFoods(cartItem.getFoods());
-			oItem.setQuantity(cartItem.getQuantity());
-			oItem.setTotalPrice(cartItem.getTotalPrice());
-			oItem.setIngredients(cartItem.getIngredients());
-			OrderItem savedItem = oIRepository.save(oItem);
-			orderItems.add(savedItem);
-		}
 		
-		int totalPrice = cartServices.calculateTotalCarts(cart);		
-		orders.setItems(orderItems);
-		orders.setTotalPrice(totalPrice);
+		List<OrderItem> cartItems = new ArrayList<>();
+	    for (OrderItem orderItem : request.getItems()) {
+	        OrderItem cartItem = new OrderItem();
+	        cartItem.setFoods(orderItem.getFoods());
+	        cartItem.setQuantity(orderItem.getQuantity());
+	        cartItem.setTotalPrice(orderItem.getTotalPrice());
+	        cartItem.setIngredients(orderItem.getIngredients());
+	        
+	        // Set other properties of CartItem as needed
+	        
+	        // Add the CartItem to the list of CartItems
+	        cartItems.add(cartItem);
+	    }
+		
+		orders.setItems(cartItems);
+		
+		//Cart cart = cartServices.findCartByUserId(user.getId());
+		//List<OrderItem> orderItems = new ArrayList<>();
+		
+//		for(CartItem cartItem: c1.getCartItem()) {
+//			
+//			OrderItem oItem = new OrderItem();
+//			
+//			oItem.setFoods(cartItem.getFoods());
+//			oItem.setQuantity(cartItem.getQuantity());
+//			oItem.setTotalPrice(cartItem.getTotalPrice());
+//			oItem.setIngredients(cartItem.getIngredients());
+//			OrderItem savedItem = oIRepository.save(oItem);
+//			orderItems.add(savedItem);
+//		}
+//		
+//		int totalPrice = cartServices.calculateTotalCarts(cart);		
+//		orders.setItems(orderItems);
+//		orders.setTotalPrice(totalPrice);
+		
+		
 		Orders orders2 = oRepository.save(orders);
 		return orders2;
 	}

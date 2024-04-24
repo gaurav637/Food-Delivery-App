@@ -9,7 +9,7 @@ import com.fooddeliveryapp.Response.ApiResponse;
 
 public interface FoodServices {
 	
-	Foods createFood(CreateFoodRequest request,Category category,Restaurant restaurant);
+	Foods createFood(CreateFoodRequest request,Category category,Restaurant restaurant) throws Exception;
 	
     List<Foods> getRestaurantFoods(int restId, 
     		boolean isVagetarian,

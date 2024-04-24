@@ -32,7 +32,6 @@ public class userController {
 		
 		  try {
 			  String jwt = token.split(" ")[1].trim();
-			 // User user  = getUserByToken(jwt);	
 		  }catch(Exception e) {
 			  e.printStackTrace();
 		  }

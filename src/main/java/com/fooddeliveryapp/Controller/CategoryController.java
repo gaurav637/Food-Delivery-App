@@ -34,7 +34,7 @@ public class CategoryController {
 		
 		try {
 			String jwt = token.split(" ")[1].trim();
-			User user = uService.findUserByJwtToken(token);
+			User user = uService.findUserByJwtToken(jwt);
 			Category category2 = cServices.createCategory(category, user.getId());
 			return new ResponseEntity<>(category2,HttpStatus.OK);
 		}catch(Exception e) {
@@ -43,7 +43,7 @@ public class CategoryController {
 		}
 	}
 	
-	@GetMapping("v1/user/get-restaurant-food-category")
+	@GetMapping("v1/user/get-restaurant-food-category/{restId}")
 	public ResponseEntity<?> getRestaurantCategory(
 			@PathVariable("restId") int restId,
 			@RequestHeader("Authorization") String token){
@@ -59,11 +59,11 @@ public class CategoryController {
 		}
 	}
 	
-	@GetMapping("v1/user/get-food-category")
+	@GetMapping("v1/user/get-food-categoryId/{categoryId}")
 	public ResponseEntity<?> getCategory(
 			@PathVariable("categoryId") int categoryId,
 			@RequestHeader("Authorization") String token){
-		
+		   
 		try {
 			String jwt = token.split(" ")[1].trim();
 			User user = uService.findUserByJwtToken(token);
@@ -75,7 +75,7 @@ public class CategoryController {
 		}
 	}
 	
-	@GetMapping("v1/admin/delete-food-category")
+	@GetMapping("v1/admin/delete-food-category/{categoryId}")
 	public ResponseEntity<?> deleteCategory(
 			@PathVariable("categoryId") int categoryId,
 			@RequestHeader("Authorization") String token){

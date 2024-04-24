@@ -11,7 +11,6 @@ import com.fooddeliveryapp.Repository.IngredientsCategoryRepository;
 import com.fooddeliveryapp.Repository.IngredientsItemRepository;
 import com.fooddeliveryapp.Services.IngredientsServices;
 import com.fooddeliveryapp.Services.restaurantServices;
-
 import lombok.RequiredArgsConstructor;
 
 
@@ -20,19 +19,18 @@ import lombok.RequiredArgsConstructor;
 public class IngredientsServiceImple implements IngredientsServices{
 	
 	
+	@Autowired
 	private IngredientsCategoryRepository icRepository;
 	
-	
+	@Autowired
 	private IngredientsItemRepository IiRepository;
 	
-	
+	@Autowired
 	private restaurantServices rest;
 	
 	
 	private IngredientsServices inServices;
 	
-	
-
 	
 	@Override
 	public IngredientsCategory createIngredientsCategory(String name, int restaurantId) {
@@ -40,8 +38,7 @@ public class IngredientsServiceImple implements IngredientsServices{
 		IngredientsCategory ingredientsCategory = new IngredientsCategory();
 		ingredientsCategory.setName(name);
 		ingredientsCategory.setRestaurant(restaurant);
-		IngredientsCategory ansCategory = new IngredientsCategory();
-		ansCategory = icRepository.save(ingredientsCategory);
+		IngredientsCategory ansCategory = icRepository.save(ingredientsCategory);
 		return ansCategory;
 	}
 
