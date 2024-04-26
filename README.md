@@ -63,6 +63,21 @@ class model ->
 9.Communication and Collaboration
 
 
+## Technologies Used
+
+<ul>
+  <li>Java: Programming language used for backend development.</li>
+  <li>Spring Boot: Framework for creating standalone, production-grade Spring-based applications.</li>
+  <li>Spring Data JPA: Simplifies the implementation of data access layers.</li>
+  <li>Hibernate: Object-relational mapping framework for mapping Java objects to database tables.</li>
+  <li>MySQL: Relational database management system for storing application data.</li>
+  <li>Spring Security: Provides authentication and authorization support.</li>
+  <li>Lombok: Java library to reduce boilerplate code.</li>
+  <li>Maven: Dependency management tool for Java projects.</li>
+  <li>Spring Web: Provides HTTP request handling capabilities.</li>
+  <li>RESTful APIs: Design and implement RESTful APIs for communication with the frontend.</li>
+  <li>Swagger: Documentation of API.</li>
+</ul>
 
 ## Contributing
 Contributions are welcome! If you'd like to contribute to the project, please follow these steps:
