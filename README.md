@@ -10,3 +10,12 @@ This Spring Boot-based food delivery application offers a streamlined solution f
 
 class model -> 
 <img width="1184" alt="Screenshot 2024-04-26 at 10 04 00 PM" src="https://github.com/gaurav637/Food-Delivery-App/assets/141955844/b99a740c-d2bd-4c44-8c6e-64a72fcac41d">
+
+## Contributing
+Contributions are welcome! If you'd like to contribute to the project, please follow these steps:
+
+1. Fork the repository
+2. Create your feature branch: git checkout -b feature-name
+3. Commit your changes: git commit -m 'Add some feature'
+4. Push to the branch: git push origin feature-name
+5. Submit a pull request
