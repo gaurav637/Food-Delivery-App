@@ -72,12 +72,31 @@ class model ->
   <li>Hibernate: Object-relational mapping framework for mapping Java objects to database tables.</li>
   <li>MySQL: Relational database management system for storing application data.</li>
   <li>Spring Security: Provides authentication and authorization support.</li>
+   <li>JWT: token validation</li>
   <li>Lombok: Java library to reduce boilerplate code.</li>
   <li>Maven: Dependency management tool for Java projects.</li>
   <li>Spring Web: Provides HTTP request handling capabilities.</li>
   <li>RESTful APIs: Design and implement RESTful APIs for communication with the frontend.</li>
   <li>Swagger: Documentation of API.</li>
 </ul>
+
+
+## Features:
+
+### User Management:
+     - User Registration
+     - User Login
+     - User Profile Management
+### Restaurant Management:
+### Order Management:
+### Cart Management
+### Authentication and Authorization:
+### Address Management:
+### Contact Management:
+### Food Management:
+### Ingredients Information
+### Category Management
+
 
 ## Contributing
 Contributions are welcome! If you'd like to contribute to the project, please follow these steps:
