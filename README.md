@@ -23,7 +23,6 @@ To run the Food Delivery Application locally, follow these steps:
 **4.** Configure the database connection in application.properties:
        MySQL can be used as the database for this project. The database connection can be configured in the application.properties file, with the appropriate 
        values for the following properties: (you'd better use another username not root)
-       
        ```
        db.url=jdbc:mysql://[ip address of db]:[port of db]/database_name
        db.username=[username]
@@ -39,6 +38,28 @@ To run the Food Delivery Application locally, follow these steps:
 class model -> 
 
 <img width="1184" alt="Screenshot 2024-04-26 at 10 04 00 PM" src="https://github.com/gaurav637/Food-Delivery-App/assets/141955844/b99a740c-d2bd-4c44-8c6e-64a72fcac41d">
+
+## Requirements
+
+1. Java Development Kit (JDK)
+2. Maven
+3. Database(MYSQL)
+4. Eclipse IDE
+5. Postman
+6. Workbench
+
+## Skills and Expertise
+
+1. Java Programming
+2. Spring Framework
+3. Spring Boot
+4. Database Management
+5. RESTful APIs
+6. Version Control
+7. Problem-Solving Skills
+8. Testing and Debugging
+9.Communication and Collaboration
+
 
 
 ## Contributing
