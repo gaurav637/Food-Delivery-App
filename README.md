@@ -110,3 +110,43 @@ Contributions are welcome! If you'd like to contribute to the project, please fo
  
  ## Contact
 For any inquiries or feedback, please contact: [LinkedIn](https://www.linkedin.com/in/gauravnegi91/)
+
+
+##Swagger Doc.
+
+## User- 
+
+<img width="1280" alt="Screenshot 2024-04-27 at 12 07 09 AM" src="https://github.com/gaurav637/Food-Delivery-App/assets/141955844/91edefc6-aac2-4be2-9210-bd6e87c5d1ef">
+
+
+## Order-
+
+<img width="1273" alt="Screenshot 2024-04-27 at 12 09 05 AM" src="https://github.com/gaurav637/Food-Delivery-App/assets/141955844/0253e025-1b97-4140-8eea-30abb8f125b1">
+
+## Cart-
+
+<img width="1265" alt="Screenshot 2024-04-27 at 12 10 10 AM" src="https://github.com/gaurav637/Food-Delivery-App/assets/141955844/abb1655c-a6cf-44d8-809c-66b7a3fedf94">
+
+## Ingredients-
+
+<img width="1270" alt="Screenshot 2024-04-27 at 12 11 05 AM" src="https://github.com/gaurav637/Food-Delivery-App/assets/141955844/f22dbb85-3506-487e-bc9b-cd381815aee2">
+
+## Admin Restaurant-
+<img width="1258" alt="Screenshot 2024-04-27 at 12 11 51 AM" src="https://github.com/gaurav637/Food-Delivery-App/assets/141955844/5e70ec0a-83fc-48f2-a603-c5035b780e4d">
+
+## Admin Food-
+
+<img width="1269" alt="Screenshot 2024-04-27 at 12 13 28 AM" src="https://github.com/gaurav637/Food-Delivery-App/assets/141955844/e82b1c0f-7182-4f23-816a-5bb20ede7737">
+
+##Authentication-
+
+<img width="1280" alt="Screenshot 2024-04-27 at 12 13 58 AM" src="https://github.com/gaurav637/Food-Delivery-App/assets/141955844/007f82a8-dde1-4157-a589-0a0062e12fa9">
+
+##Category-
+
+<img width="1257" alt="Screenshot 2024-04-27 at 12 14 47 AM" src="https://github.com/gaurav637/Food-Delivery-App/assets/141955844/6d259ecc-2117-4bd0-a416-73280954ef5d">
+
+##Postman
+
+<img width="1280" alt="Screenshot 2024-04-27 at 12 16 29 AM" src="https://github.com/gaurav637/Food-Delivery-App/assets/141955844/f68b4960-7a58-4a5a-a983-bfc7d1ee8775">
+
