@@ -7,3 +7,6 @@ This Spring Boot-based food delivery application offers a streamlined solution f
 
 
 <img width="1053" alt="Screenshot 2024-04-24 at 11 40 07 PM" src="https://github.com/gaurav637/Food-Delivery-App/assets/141955844/f33d0db6-5ada-4429-8967-f0db94c123df">
+
+class model -> 
+<img width="1184" alt="Screenshot 2024-04-26 at 10 04 00 PM" src="https://github.com/gaurav637/Food-Delivery-App/assets/141955844/b99a740c-d2bd-4c44-8c6e-64a72fcac41d">
