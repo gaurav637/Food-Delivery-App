@@ -11,6 +11,8 @@ This Spring Boot-based food delivery application offers a streamlined solution f
 class model -> 
 <img width="1184" alt="Screenshot 2024-04-26 at 10 04 00 PM" src="https://github.com/gaurav637/Food-Delivery-App/assets/141955844/b99a740c-d2bd-4c44-8c6e-64a72fcac41d">
 
+## Contact
+For any inquiries or feedback, please contact: [LinkedIn](https://www.linkedin.com/in/gauravnegi91/)
 ## Contributing
 Contributions are welcome! If you'd like to contribute to the project, please follow these steps:
 
