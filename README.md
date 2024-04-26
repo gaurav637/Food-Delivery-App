@@ -87,15 +87,15 @@ class model ->
      - User Registration
      - User Login
      - User Profile Management
-### Restaurant Management:
-### Order Management:
-### Cart Management
-### Authentication and Authorization:
-### Address Management:
-### Contact Management:
-### Food Management:
-### Ingredients Information
-### Category Management
+2. Restaurant Management:
+3. Order Management:
+4. Cart Management
+5. Authentication and Authorization:
+6. Address Management:
+7. Contact Management:
+8. Food Management:
+9. Ingredients Information
+10. Category Management
 
 
 ## Contributing
